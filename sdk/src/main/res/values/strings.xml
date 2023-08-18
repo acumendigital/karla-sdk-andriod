@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="service_description">Karla Mobile</string>
+    <string name="apdu_description">Karla Mobile</string>
+    <string name="servicedesc">Karla Tap to Pay</string>
+    <string name="aiddescription">Karla Tap to Pay</string>
+</resources>
