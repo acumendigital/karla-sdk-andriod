@@ -14,10 +14,15 @@ import co.getkarla.contactless.ui.theme.KarlaTheme
 import co.getkarla.sdk.Sdk
 
 class MainActivity : ComponentActivity() {
+
+    fun onTransactionCompleted(data: MutableMap<String, String>) {}
+    fun onTransactionInitiated() {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Sdk().testHce(this, "hi")
+//        Sdk().testHce(this, "hi")
 //        Sdk().sayHello(this, "hello world")
+
+        Sdk("", ::onTransactionInitiated, ::onTransactionCompleted).completeTransaction(this)
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme

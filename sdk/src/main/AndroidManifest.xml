@@ -15,10 +15,15 @@
                 <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+            </intent-filter>
             <!-- Required XML configuration file, listing the AIDs that we are emulating cards
                  for. This defines what protocols our card emulation service supports. -->
             <meta-data android:name="android.nfc.cardemulation.host_apdu_service"
                 android:resource="@xml/apduservice"/>
+            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/techlist" />
         </service>
     </application>
 </manifest>
