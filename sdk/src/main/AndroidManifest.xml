@@ -5,25 +5,37 @@
     <uses-feature android:name="android.hardware.nfc" android:required="false" />
     <uses-feature android:name="android.hardware.nfc.hce" android:required="true" />
     <application>
-        <service android:name=".cardEmulation.KHostApduService"
-            android:exported="true"
-            android:enabled="true"
-            android:permission="android.permission.BIND_NFC_SERVICE">
-
-            <!-- Intent filter indicating that we support card emulation. -->
+        <activity
+            android:name=".nfc.Nfc"
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
                 <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
-            </intent-filter>
-            <!-- Required XML configuration file, listing the AIDs that we are emulating cards
-                 for. This defines what protocols our card emulation service supports. -->
-            <meta-data android:name="android.nfc.cardemulation.host_apdu_service"
-                android:resource="@xml/apduservice"/>
-            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/techlist" />
-        </service>
+        </activity>
+<!--        <service android:name=".cardEmulation.KHostApduService"-->
+<!--            android:exported="true"-->
+<!--            android:enabled="true"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:permission="android.permission.BIND_NFC_SERVICE">-->
+<!--            &lt;!&ndash; Intent filter indicating that we support card emulation. &ndash;&gt;-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>-->
+<!--                <category android:name="android.intent.category.DEFAULT"/>-->
+<!--            </intent-filter>-->
+<!--&lt;!&ndash;            <intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;                <action android:name="android.nfc.action.TECH_DISCOVERED"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            </intent-filter>&ndash;&gt;-->
+<!--            &lt;!&ndash; Required XML configuration file, listing the AIDs that we are emulating cards-->
+<!--                 for. This defines what protocols our card emulation service supports. &ndash;&gt;-->
+<!--            <meta-data android:name="android.nfc.cardemulation.host_apdu_service"-->
+<!--                android:resource="@xml/apduservice"/>-->
+<!--&lt;!&ndash;            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:resource="@xml/techlist" />&ndash;&gt;-->
+<!--        </service>-->
+
+<!--        <activity android:name="co.getkarla.sdk.nfc.Nfc" />-->
     </application>
 </manifest>

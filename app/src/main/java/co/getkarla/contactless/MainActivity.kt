@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,7 +23,9 @@ class MainActivity : ComponentActivity() {
 //        Sdk().testHce(this, "hi")
 //        Sdk().sayHello(this, "hello world")
 
-        Sdk("", ::onTransactionInitiated, ::onTransactionCompleted).completeTransaction(this)
+//        Sdk("", ::onTransactionInitiated, ::onTransactionCompleted).startTransaction(this, mutableMapOf())
+        val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted)
+        sdk.completeTransaction()
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme
@@ -31,6 +34,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Greeting("Android")
+
                 }
             }
         }

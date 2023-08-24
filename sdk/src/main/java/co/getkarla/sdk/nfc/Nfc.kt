@@ -1,49 +1,69 @@
 package co.getkarla.sdk.nfc
 
+import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
+import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import co.getkarla.sdk.nfc.parser.NdefMessageParser
 
-class Nfc(context: Context) : AppCompatActivity() {
+class Nfc: Activity() {
+
+    private var TAG = "NFC ACTIVITY"
 
     private var mNfcAdapter: NfcAdapter? = null
     private var mPendingIntent: PendingIntent? = null
+//    private var context: Activity? = null
 
     init {
-        Log.d("NFC ACTIVITY","i am here")
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "started")
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
         if (checkNFCEnable()) {
-            mPendingIntent = PendingIntent.getActivity(context, 0, Intent(context, context.javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
+            Log.d(TAG, "enabled")
+            mPendingIntent =
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            finish()
+
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+                intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
+                    val messages: List<NdefMessage> = rawMessages.map { it as NdefMessage }
+                    // Process the messages array.
+                    Log.d(TAG, messages.toString())
+                    parserNDEFMessage(messages)
+                }
+            }
         } else {
-            // TODO: handle no nfc
-            Log.d("NFC ACTIVITY", "no nfc")
+            // TODO: implement no nfc
+            Log.d(TAG, "nfc not enabled")
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("NFC ACTIVITY", "resuming")
         mNfcAdapter?.enableForegroundDispatch(this, mPendingIntent, null, null)
     }
 
-
     override fun onPause() {
         super.onPause()
-        Log.d("NFC ACTIVITY", "pausing")
         mNfcAdapter?.disableForegroundDispatch(this)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        Log.d(TAG, "new intent")
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
             intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
                 val messages: List<NdefMessage> = rawMessages.map { it as NdefMessage }
                 // Process the messages array.
+                Log.d(TAG, messages.toString())
                 parserNDEFMessage(messages)
             }
         }
@@ -55,21 +75,21 @@ class Nfc(context: Context) : AppCompatActivity() {
         val size = records.size
 
         for (i in 0 until size) {
-            val record = records.get(i)
+            val record = records[i]
             val str = record.str()
+            print(str)
             builder.append(str).append("\n")
         }
-//        mTvView.text = builder.toString()
-        print(builder.toString())
+        Log.d(TAG, builder.toString())
     }
 
     private fun checkNFCEnable(): Boolean {
         return if (mNfcAdapter == null) {
-            // TODO: handle no nfc
-            Log.d("NFC ACTIVITY", "no nfc")
+            // TODO: implement no nfc
+            Log.d(TAG, "nfc not enabled")
             false
         } else {
-            mNfcAdapter!!.isEnabled
+            mNfcAdapter?.isEnabled == true
         }
     }
 }

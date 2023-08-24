@@ -1,5 +1,6 @@
 package co.getkarla.sdk
 
+import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -40,10 +41,10 @@ class Sdk {
         this.onTransactionInitiated()
     }
 
-    fun completeTransaction(context: Context) {
+    fun completeTransaction() {
         Log.d("NFC ACTIVITY", "starting nfc activity")
         try {
-            Nfc(context)
+            Nfc()
         } catch (e: Exception) {
             throw(e)
         }
