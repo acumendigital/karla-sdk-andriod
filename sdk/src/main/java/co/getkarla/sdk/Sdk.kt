@@ -9,13 +9,17 @@ import android.util.Log
 import android.widget.Toast
 import co.getkarla.sdk.cardEmulation.KHostApduService
 import co.getkarla.sdk.nfc.Nfc
+import com.squareup.otto.Subscribe
 
-class Sdk {
+val EventBus = Bus().getBus()
 
-    // in this version our contactles sdk will power transactions bank to bank (same bank)
+class Sdk(apiKey: String, onTransactionInitiated: () -> Unit, onTransactionCompleted: (data: String) -> Unit ) {
+    private lateinit var mNfc: Nfc
+
+    // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
     // the flow is this -
     /*
-    * Initiate Transaction - Merchant Pos
+    * Initiate Transaction - Merchant/Pos
     * Complete Transaction - User App
     * Initiate Transaction basically starts a transaction from a merchants pos/app
     * it starts a HCE session probably carrying a transaction identifier optionally encrypted
@@ -23,13 +27,15 @@ class Sdk {
     * Complete Transaction picks up that identifier, sends the identifier back to the integrating app
     * and completes the transaction (can be initiating a bank transfer or something)
     * */
+
     val onTransactionInitiated: () -> Unit
-    val onTransactionCompleted: (data: MutableMap<String, String>) -> Unit
-    val apiKey: String
-    constructor(apiKey: String, onTransactionInitiated: () -> Unit, onTransactionCompleted: (data: MutableMap<String, String>) -> Unit ) {
+    val onTransactionCompleted: (data: String) -> Unit
+    private val apiKey: String
+    init {
         this.onTransactionInitiated = onTransactionInitiated
         this.onTransactionCompleted = onTransactionCompleted
         this.apiKey = apiKey
+        EventBus.register(this)
     }
 
     // Initiate Transaction
@@ -41,13 +47,16 @@ class Sdk {
         this.onTransactionInitiated()
     }
 
+    @Subscribe
+    fun onComplete(event: Events.NfcReadResult) {
+        this.onTransactionCompleted(event.getResult())
+    }
+
     fun completeTransaction() {
-        Log.d("NFC ACTIVITY", "starting nfc activity")
         try {
-            Nfc()
+            this.mNfc = Nfc()
         } catch (e: Exception) {
             throw(e)
         }
-
     }
 }

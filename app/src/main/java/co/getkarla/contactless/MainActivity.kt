@@ -1,6 +1,7 @@
 package co.getkarla.contactless
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,14 +17,12 @@ import co.getkarla.sdk.Sdk
 
 class MainActivity : ComponentActivity() {
 
-    fun onTransactionCompleted(data: MutableMap<String, String>) {}
+    fun onTransactionCompleted(data: String) {
+        Log.i("FINAL RESULT",data)
+    }
     fun onTransactionInitiated() {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        Sdk().testHce(this, "hi")
-//        Sdk().sayHello(this, "hello world")
-
-//        Sdk("", ::onTransactionInitiated, ::onTransactionCompleted).startTransaction(this, mutableMapOf())
         val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted)
         sdk.completeTransaction()
         setContent {

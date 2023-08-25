@@ -9,34 +9,42 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import co.getkarla.sdk.Bus
+import co.getkarla.sdk.EventBus
+import co.getkarla.sdk.Events
 import co.getkarla.sdk.nfc.parser.NdefMessageParser
+import com.squareup.otto.Subscribe
 
-class Nfc: Activity() {
+class Nfc(): Activity() {
 
     private var TAG = "NFC ACTIVITY"
 
     private var mNfcAdapter: NfcAdapter? = null
     private var mPendingIntent: PendingIntent? = null
-//    private var context: Activity? = null
 
-    init {
+    private var result: String = ""
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.unregister(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "started")
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
         if (checkNFCEnable()) {
-            Log.d(TAG, "enabled")
             mPendingIntent =
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-            finish()
 
             if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
                     val messages: List<NdefMessage> = rawMessages.map { it as NdefMessage }
                     // Process the messages array.
-                    Log.d(TAG, messages.toString())
                     parserNDEFMessage(messages)
                 }
             }
@@ -58,12 +66,10 @@ class Nfc: Activity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        Log.d(TAG, "new intent")
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
             intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
                 val messages: List<NdefMessage> = rawMessages.map { it as NdefMessage }
                 // Process the messages array.
-                Log.d(TAG, messages.toString())
                 parserNDEFMessage(messages)
             }
         }
@@ -80,7 +86,11 @@ class Nfc: Activity() {
             print(str)
             builder.append(str).append("\n")
         }
-        Log.d(TAG, builder.toString())
+
+        this.result = builder.toString()
+        val result = Events.NfcReadResult(builder.toString())
+        EventBus.post(result)
+        finish()
     }
 
     private fun checkNFCEnable(): Boolean {
