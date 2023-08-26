@@ -24,7 +24,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted)
-        sdk.completeTransaction()
+//        sdk.completeTransaction()
+        sdk.startTransaction(this, "{\"_id\":\"62ff8a9d062c226eceed5dcb\",\"merchantName\":\"Elvis Chuku\"}")
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme

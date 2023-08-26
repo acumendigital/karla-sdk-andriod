@@ -108,6 +108,7 @@ open class KHostApduService : HostApduService() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
         if (intent.hasExtra("ndefMessage")) {
+            Log.d("HCE ACTIVITY", "ndef dey")
             NDEF_URI =
                 NdefMessage(createTextRecord("en", intent.getStringExtra("ndefMessage").toString(), NDEF_ID))
 

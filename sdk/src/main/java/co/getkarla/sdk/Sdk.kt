@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import co.getkarla.sdk.cardEmulation.KHostApduService
 import co.getkarla.sdk.nfc.Nfc
 import com.squareup.otto.Subscribe
@@ -39,10 +40,10 @@ class Sdk(apiKey: String, onTransactionInitiated: () -> Unit, onTransactionCompl
     }
 
     // Initiate Transaction
-    fun startTransaction(context: Context, data: MutableMap<String, String>) {
+    fun startTransaction(context: ComponentActivity, data: String) {
         val intent = Intent(context, KHostApduService::class.java)
-        Log.d("debug", data.entries.toString())
-        intent.putExtra("ndefMessage", data.entries.toString())
+        Log.d("HCE ACTIVITY", data)
+        intent.putExtra("ndefMessage", data)
         context.startService(intent)
         this.onTransactionInitiated()
     }
