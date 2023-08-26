@@ -19,8 +19,9 @@ class MainActivity : ComponentActivity() {
 
     fun onTransactionCompleted(data: String) {
         Log.i("FINAL RESULT",data)
+        // do whatever you want to do with the data received
     }
-    fun onTransactionInitiated() {}
+    fun onTransactionInitiated(data: String) {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted)

@@ -14,7 +14,7 @@ import com.squareup.otto.Subscribe
 
 val EventBus = Bus().getBus()
 
-class Sdk(apiKey: String, onTransactionInitiated: () -> Unit, onTransactionCompleted: (data: String) -> Unit ) {
+class Sdk(apiKey: String, onTransactionInitiated: (data: String) -> Unit, onTransactionCompleted: (data: String) -> Unit ) {
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
@@ -29,7 +29,7 @@ class Sdk(apiKey: String, onTransactionInitiated: () -> Unit, onTransactionCompl
     * and completes the transaction (can be initiating a bank transfer or something)
     * */
 
-    val onTransactionInitiated: () -> Unit
+    val onTransactionInitiated: (data: String) -> Unit
     val onTransactionCompleted: (data: String) -> Unit
     private val apiKey: String
     init {
@@ -45,7 +45,7 @@ class Sdk(apiKey: String, onTransactionInitiated: () -> Unit, onTransactionCompl
         Log.d("HCE ACTIVITY", data)
         intent.putExtra("ndefMessage", data)
         context.startService(intent)
-        this.onTransactionInitiated()
+        this.onTransactionInitiated(data)
     }
 
     @Subscribe
