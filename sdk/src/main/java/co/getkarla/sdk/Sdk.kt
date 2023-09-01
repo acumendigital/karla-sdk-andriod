@@ -36,7 +36,6 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit
         EventBus.register(this)
     }
 
-    // Initiate Transaction
     fun startTransaction(context: ComponentActivity, id: String, amount: Double, reference: String) {
         val intent = Intent(context, KHostApduService::class.java)
         val data = mapOf("id" to id, "amount" to amount, "reference" to reference)
@@ -53,7 +52,15 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit
         this.onTransactionCompleted(result.toMap())
     }
 
-    fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith {
+    fun completeTransaction() {
+        try {
+            this.mNfc = Nfc()
+        } catch (e: Exception) {
+            throw(e)
+        }
+    }
+
+    fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith { it ->
         when (val value = this[it])
         {
             is JSONArray ->
@@ -64,14 +71,6 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit
             is JSONObject -> value.toMap()
             JSONObject.NULL -> null
             else            -> value
-        }
-    }
-
-    fun completeTransaction() {
-        try {
-            this.mNfc = Nfc()
-        } catch (e: Exception) {
-            throw(e)
         }
     }
 }
