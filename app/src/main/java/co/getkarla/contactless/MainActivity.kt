@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -17,16 +16,16 @@ import co.getkarla.sdk.Sdk
 
 class MainActivity : ComponentActivity() {
 
-    fun onTransactionCompleted(data: String) {
-        Log.i("FINAL RESULT",data)
+    fun onTransactionCompleted(data: Map<String, *>) {
+        Log.i("FINAL RESULT", data.toString())
         // do whatever you want to do with the data received
     }
-    fun onTransactionInitiated(data: String) {}
+    fun onTransactionInitiated(data: Map<String, *>) {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted)
-//        sdk.completeTransaction()
-        sdk.startTransaction(this, "{\"_id\":\"62ff8a9d062c226eceed5dcb\",\"merchantName\":\"Elvis Chuku\"}")
+        sdk.completeTransaction()
+//        sdk.startTransaction(this, "", 4000.00,"")
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme

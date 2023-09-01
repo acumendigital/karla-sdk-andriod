@@ -1,20 +1,17 @@
 package co.getkarla.sdk
 
-import android.app.Activity
-import android.app.Service
-import android.content.Context
 import android.content.Intent
-import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import co.getkarla.sdk.cardEmulation.KHostApduService
 import co.getkarla.sdk.nfc.Nfc
 import com.squareup.otto.Subscribe
+import org.json.JSONArray
+import org.json.JSONObject
 
 val EventBus = Bus().getBus()
 
-class Sdk(apiKey: String, onTransactionInitiated: (data: String) -> Unit, onTransactionCompleted: (data: String) -> Unit ) {
+class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit ) {
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
@@ -29,8 +26,8 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: String) -> Unit, onTran
     * and completes the transaction (can be initiating a bank transfer or something)
     * */
 
-    val onTransactionInitiated: (data: String) -> Unit
-    val onTransactionCompleted: (data: String) -> Unit
+    val onTransactionInitiated: (data: Map<String, *>) -> Unit
+    val onTransactionCompleted: (data: Map<String, *>) -> Unit
     private val apiKey: String
     init {
         this.onTransactionInitiated = onTransactionInitiated
@@ -40,17 +37,34 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: String) -> Unit, onTran
     }
 
     // Initiate Transaction
-    fun startTransaction(context: ComponentActivity, data: String) {
+    fun startTransaction(context: ComponentActivity, id: String, amount: Double, reference: String) {
         val intent = Intent(context, KHostApduService::class.java)
-        Log.d("HCE ACTIVITY", data)
-        intent.putExtra("ndefMessage", data)
+        val data = mapOf("id" to id, "amount" to amount, "reference" to reference)
+        val jsonData = JSONObject(data).toString()
+        Log.d("HCE ACTIVITY", jsonData)
+        intent.putExtra("ndefMessage", jsonData)
         context.startService(intent)
         this.onTransactionInitiated(data)
     }
 
     @Subscribe
     fun onComplete(event: Events.NfcReadResult) {
-        this.onTransactionCompleted(event.getResult())
+        val result = JSONObject(event.getResult())
+        this.onTransactionCompleted(result.toMap())
+    }
+
+    fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith {
+        when (val value = this[it])
+        {
+            is JSONArray ->
+            {
+                val map = (0 until value.length()).associate { Pair(it.toString(), value[it]) }
+                JSONObject(map).toMap().values.toList()
+            }
+            is JSONObject -> value.toMap()
+            JSONObject.NULL -> null
+            else            -> value
+        }
     }
 
     fun completeTransaction() {
