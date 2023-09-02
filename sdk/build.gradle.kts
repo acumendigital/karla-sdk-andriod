@@ -43,7 +43,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation("com.squareup:otto:+")
+    implementation("com.squareup:otto:1.3.8")
 
 //    implementation("com.romellfudi.fudinfc:fudi-nfc:android-12-1.1.0")
 }
@@ -59,7 +59,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla"
             groupId = "co.getkarla.sdk"
-            version = "0.0.1"
+            version = "0.0.6"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"

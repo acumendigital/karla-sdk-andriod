@@ -1,5 +1,6 @@
 package co.getkarla.sdk
 
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -36,9 +37,12 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit
         EventBus.register(this)
     }
 
-    fun startTransaction(context: ComponentActivity, id: String, amount: Double, reference: String) {
+    fun startTransaction(context: Activity, id: String, amount: Double, reference: String, extra: Map<String, *>?) {
         val intent = Intent(context, KHostApduService::class.java)
-        val data = mapOf("id" to id, "amount" to amount, "reference" to reference)
+        val data = mapOf("id" to id, "amount" to amount, "reference" to reference).plus(extra as Map<String, *>)
+        if (extra.isNotEmpty()) {
+            data + extra
+        }
         val jsonData = JSONObject(data).toString()
         Log.d("HCE ACTIVITY", jsonData)
         intent.putExtra("ndefMessage", jsonData)
