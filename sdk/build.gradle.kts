@@ -19,7 +19,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-//            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -51,15 +50,19 @@ dependencies {
 
 configure<PublishingExtension> {
     repositories {
+//        maven {
+//            url = uri("/users/macbook/Documents/Karla/maven-repo")
+//        }
         maven {
-            url = uri("/users/macbook/Documents/Karla/maven-repo")
+            url = uri("https://jitpack.io")
+            credentials { username to "jp_mu5a5evnsugudvpvn4k91so78g" }
         }
     }
 
     publications {
         create<MavenPublication>("Maven") {
-            artifactId = "karla"
-            groupId = "co.getkarla.sdk"
+            artifactId = "karla-sdk-andriod"
+            groupId = "com.github.acumendigital"
             version = "0.0.7"
             afterEvaluate {
                 artifact(tasks.getByName(
