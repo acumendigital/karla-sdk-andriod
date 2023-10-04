@@ -3,8 +3,8 @@ package co.getkarla.sdk
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
-import androidx.activity.ComponentActivity
 import co.getkarla.sdk.cardEmulation.KHostApduService
+import co.getkarla.sdk.nfc.Card
 import co.getkarla.sdk.nfc.Nfc
 import com.squareup.otto.Subscribe
 import org.json.JSONArray
@@ -12,7 +12,7 @@ import org.json.JSONObject
 
 val EventBus = Bus().getBus()
 
-class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit ) {
+class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
@@ -29,10 +29,12 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit
 
     val onTransactionInitiated: (data: Map<String, *>) -> Unit
     val onTransactionCompleted: (data: Map<String, *>) -> Unit
+    val onReadEmvCard: (data: Map<String, *>) -> Unit
     private val apiKey: String
     init {
         this.onTransactionInitiated = onTransactionInitiated
         this.onTransactionCompleted = onTransactionCompleted
+        this.onReadEmvCard = onReadEmvCard
         this.apiKey = apiKey
         EventBus.register(this)
     }
@@ -56,9 +58,25 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit
         this.onTransactionCompleted(result.toMap())
     }
 
+    @Subscribe
+    fun onComplete(event: Events.EmvReadResult) {
+        val result = JSONObject(event.getResult())
+        this.onReadEmvCard(result.toMap())
+    }
+
     fun completeTransaction() {
         try {
             this.mNfc = Nfc()
+        } catch (e: Exception) {
+            throw(e)
+        }
+    }
+
+    fun readEmvCard(context: Activity, amount: Double, authorizeTransaction: () -> Boolean) {
+        try {
+            val intent = Intent(context, Card::class.java)
+            context.startService(intent)
+            // log that user started a transaction
         } catch (e: Exception) {
             throw(e)
         }

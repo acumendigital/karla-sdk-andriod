@@ -44,6 +44,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation("com.squareup:otto:1.3.8")
+    implementation("com.github.pro100svitlo:creditCardNfcReader:1.0.3")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.4")
 
 //    implementation("com.romellfudi.fudinfc:fudi-nfc:android-12-1.1.0")
 }

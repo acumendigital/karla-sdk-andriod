@@ -21,11 +21,21 @@ class MainActivity : ComponentActivity() {
         // do whatever you want to do with the data received
     }
     fun onTransactionInitiated(data: Map<String, *>) {}
+
+    fun onReadEmvCard(data: Map<String, *>) {
+        Log.i("FINAL RESULT", data.toString())
+        // do whatever you want to do with the data received
+    }
+
+    fun authorizeTransaction(): Boolean {
+        return false
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted)
+        val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard)
 //        sdk.completeTransaction()
-        sdk.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
+//        sdk.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
+        sdk.readEmvCard(this, 40000.00, ::authorizeTransaction)
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme
