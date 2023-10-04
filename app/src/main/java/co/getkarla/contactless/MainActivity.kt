@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import co.getkarla.contactless.ui.theme.KarlaTheme
-import co.getkarla.sdk.Sdk
+import co.getkarla.sdk.Karla
 
 class MainActivity : ComponentActivity() {
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sdk = Sdk("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard)
+        val sdk = Karla("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard)
 //        sdk.completeTransaction()
 //        sdk.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
         sdk.readEmvCard(this, 40000.00, ::authorizeTransaction)
