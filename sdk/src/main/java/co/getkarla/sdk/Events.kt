@@ -1,5 +1,6 @@
 package co.getkarla.sdk
 
+val EventBus = Bus().getBus()
 class Events {
 
     class NfcReadResult (result: String) {

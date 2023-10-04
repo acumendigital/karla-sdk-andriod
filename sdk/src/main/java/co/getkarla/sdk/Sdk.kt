@@ -10,9 +10,7 @@ import com.squareup.otto.Subscribe
 import org.json.JSONArray
 import org.json.JSONObject
 
-val EventBus = Bus().getBus()
-
-class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
+public class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
@@ -76,6 +74,8 @@ class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit
         try {
             val intent = Intent(context, Card::class.java)
             context.startService(intent)
+            Log.d("Details", amount.toString())
+            authorizeTransaction()
             // log that user started a transaction
         } catch (e: Exception) {
             throw(e)

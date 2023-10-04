@@ -2,20 +2,16 @@ package co.getkarla.sdk.nfc
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import co.getkarla.sdk.Bus
 import co.getkarla.sdk.EventBus
 import co.getkarla.sdk.Events
 import co.getkarla.sdk.nfc.parser.NdefMessageParser
-import com.squareup.otto.Subscribe
 
-class Nfc(): Activity() {
+class Nfc : Activity() {
 
     private var TAG = "NFC ACTIVITY"
 

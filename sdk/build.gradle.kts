@@ -57,7 +57,7 @@ configure<PublishingExtension> {
 //        }
         maven {
             url = uri("https://jitpack.io")
-            credentials { username to "jp_mu5a5evnsugudvpvn4k91so78g" }
+            credentials { username = "jp_mu5a5evnsugudvpvn4k91so78g" }
         }
     }
 
@@ -65,7 +65,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla-sdk-andriod"
             groupId = "com.github.acumendigital"
-            version = "0.0.8"
+            version = "0.1.2"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"

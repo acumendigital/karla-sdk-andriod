@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import co.getkarla.sdk.EventBus
 import co.getkarla.sdk.Events
-import co.getkarla.sdk.nfc.extensions.formattedCardNumber
 import com.pro100svitlo.creditCardNfcReader.utils.CardNfcUtils
 import org.json.JSONObject
 
