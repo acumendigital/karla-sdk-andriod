@@ -26,6 +26,6 @@
     @com.squareup.otto.Produce public *;
 }
 
--keep class co.getkarla.sdk.Karla
--keep class co.getkarla.sdk.Events
--keep class co.getkarla.sdk.Bus
+#-keep class co.getkarla.sdk.Karla
+#-keep class co.getkarla.sdk.Events
+#-keep class co.getkarla.sdk.Bus

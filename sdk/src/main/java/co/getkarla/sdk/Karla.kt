@@ -10,7 +10,7 @@ import com.squareup.otto.Subscribe
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Karla {
+class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
@@ -25,25 +25,25 @@ class Karla {
     * and completes the transaction (can be initiating a bank transfer or something)
     * */
 
-    lateinit var onTransactionInitiated: (data: Map<String, *>) -> Unit
-    lateinit var onTransactionCompleted: (data: Map<String, *>) -> Unit
-    lateinit var onReadEmvCard: (data: Map<String, *>) -> Unit
-    private lateinit var apiKey: String
+    val onTransactionInitiated: (data: Map<String, *>) -> Unit
+    val onTransactionCompleted: (data: Map<String, *>) -> Unit
+    val onReadEmvCard: (data: Map<String, *>) -> Unit
+    private val apiKey: String
 
-    fun init(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
-        this.onTransactionInitiated = onTransactionInitiated
-        this.onTransactionCompleted = onTransactionCompleted
-        this.onReadEmvCard = onReadEmvCard
-        this.apiKey = apiKey
-        EventBus.register(this)
-    }
-//    init {
+//    fun init(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
 //        this.onTransactionInitiated = onTransactionInitiated
 //        this.onTransactionCompleted = onTransactionCompleted
 //        this.onReadEmvCard = onReadEmvCard
 //        this.apiKey = apiKey
 //        EventBus.register(this)
 //    }
+    init {
+        this.onTransactionInitiated = onTransactionInitiated
+        this.onTransactionCompleted = onTransactionCompleted
+        this.onReadEmvCard = onReadEmvCard
+        this.apiKey = apiKey
+        EventBus.register(this)
+    }
 
     fun startTransaction(context: Activity, id: String, amount: Double, reference: String, extra: Map<String, *>?) {
         val intent = Intent(context, KHostApduService::class.java)

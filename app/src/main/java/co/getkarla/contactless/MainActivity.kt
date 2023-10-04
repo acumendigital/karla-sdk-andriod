@@ -32,8 +32,7 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val karla = Karla()
-        karla.init("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard)
+        val karla = Karla("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard)
 //        sdk.completeTransaction()
 //        sdk.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
         karla.readEmvCard(this, 40000.00, ::authorizeTransaction)
