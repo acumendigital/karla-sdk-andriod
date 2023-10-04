@@ -10,7 +10,7 @@ import com.squareup.otto.Subscribe
 import org.json.JSONArray
 import org.json.JSONObject
 
-public class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
+class Sdk(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
