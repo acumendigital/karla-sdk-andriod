@@ -4,4 +4,4 @@ before_install:
   - ./scripts/prepareJitpackEnvironment.sh
 install:
   - FILE="-Dfile=karla-sdk.aar"
-  - mvn install:install-file $FILE -DgroupId=com.github.acumendigital -DartifactId=karla-sdk-andriod -Dversion=0.1.9 -Dpackaging=aar -DgeneratePom=true
+  - mvn install:install-file $FILE -DgroupId=com.github.acumendigital -DartifactId=karla-sdk-andriod -Dversion=0.2.0 -Dpackaging=aar -DgeneratePom=true

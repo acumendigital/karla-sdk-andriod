@@ -51,6 +51,8 @@ class Card: Activity(), MyCardNfcAsyncTask.MyCardNfcInterface {
         if (mNfcAdapter != null) {
             mCardNfcUtils?.enableDispatch()
         }
+
+//        mNfcAdapter?.enableForegroundDispatch(this, mPendingIntent, null, null)
     }
 
     override fun onPause() {
@@ -58,6 +60,8 @@ class Card: Activity(), MyCardNfcAsyncTask.MyCardNfcInterface {
         if (mNfcAdapter != null) {
             mCardNfcUtils?.disableDispatch()
         }
+
+        mNfcAdapter?.disableForegroundDispatch(this)
     }
 
     override fun onNewIntent(intent: Intent) {

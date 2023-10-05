@@ -11,6 +11,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit, onCompleteEmvTransaction: (data: Map<String, Any>) -> Boolean ) {
+    private lateinit var mCard: Card
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
@@ -82,8 +83,9 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
 
     fun readEmvCard(context: Activity, amount: Double) {
         try {
-            val intent = Intent(context, Card::class.java)
-            context.startService(intent)
+//            val intent = Intent(context, Card::class.java)
+//            context.startService(intent)
+            this.mCard = Card()
             this.amount = amount
             // log that user started a transaction
         } catch (e: Exception) {

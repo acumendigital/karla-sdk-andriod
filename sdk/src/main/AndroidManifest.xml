@@ -8,6 +8,7 @@
         <activity
             android:name=".nfc.Nfc"
             android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
@@ -17,7 +18,8 @@
         </activity>
         <activity
             android:name=".nfc.Card"
-            android:launchMode="singleTop"
+            android:enabled="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
