@@ -10,7 +10,7 @@ import com.squareup.otto.Subscribe
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
+class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit, onCompleteEmvTransaction: (data: Map<String, Any>) -> Unit ) {
     private lateinit var mNfc: Nfc
 
     // in this version, our contactless sdk will power transactions Phone2Phone, Phone2POS
@@ -29,8 +29,12 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     val onTransactionCompleted: (data: Map<String, *>) -> Unit
     val onReadEmvCard: (data: Map<String, *>) -> Unit
     private val apiKey: String
+    private lateinit var cardResult: MutableMap<String, Any>
+    private var completeEmvTransaction: (data: Map<String, Any>) -> Unit
+    private lateinit var authorizeTransaction: () -> Boolean
+    private var amount: Double = 0.0
 
-//    fun init(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
+    //    fun init(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
 //        this.onTransactionInitiated = onTransactionInitiated
 //        this.onTransactionCompleted = onTransactionCompleted
 //        this.onReadEmvCard = onReadEmvCard
@@ -42,6 +46,7 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
         this.onTransactionCompleted = onTransactionCompleted
         this.onReadEmvCard = onReadEmvCard
         this.apiKey = apiKey
+        this.completeEmvTransaction = onCompleteEmvTransaction
         EventBus.register(this)
     }
 
@@ -67,7 +72,10 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     @Subscribe
     fun onComplete(event: Events.EmvReadResult) {
         val result = JSONObject(event.getResult())
+        cardResult = result.toMap() as MutableMap<String, Any>
         this.onReadEmvCard(result.toMap())
+        this.authorizeTransaction()
+
     }
 
     fun completeTransaction() {
@@ -82,12 +90,18 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
         try {
             val intent = Intent(context, Card::class.java)
             context.startService(intent)
-            Log.d("Details", amount.toString())
-            authorizeTransaction()
+            this.authorizeTransaction = authorizeTransaction
+            this.amount = amount
             // log that user started a transaction
         } catch (e: Exception) {
             throw(e)
         }
+    }
+
+    fun completeEmvTransaction(pin: String) {
+        cardResult["pin"] = pin
+        cardResult["amount"] = this.amount
+        this.completeEmvTransaction(cardResult)
     }
 
     fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith { it ->

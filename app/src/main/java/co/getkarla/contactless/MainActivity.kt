@@ -16,6 +16,7 @@ import co.getkarla.sdk.Karla
 
 class MainActivity : ComponentActivity() {
 
+    private val karla = Karla("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard, ::onCompleteEmvTransaction)
     fun onTransactionCompleted(data: Map<String, *>) {
         Log.i("FINAL RESULT", data.toString())
         // do whatever you want to do with the data received
@@ -23,16 +24,21 @@ class MainActivity : ComponentActivity() {
     fun onTransactionInitiated(data: Map<String, *>) {}
 
     fun onReadEmvCard(data: Map<String, *>) {
+        // will probably tell you if there's an error from here
+    }
+
+    fun onCompleteEmvTransaction(data: Map<String, Any>) {
+        // call your endpoint here
         Log.i("FINAL RESULT", data.toString())
-        // do whatever you want to do with the data received
     }
 
     fun authorizeTransaction(): Boolean {
+        karla.completeEmvTransaction("1919")
         return false
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val karla = Karla("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard)
+
 //        sdk.completeTransaction()
 //        sdk.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
         karla.readEmvCard(this, 40000.00, ::authorizeTransaction)

@@ -65,7 +65,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla-sdk-andriod"
             groupId = "com.github.acumendigital"
-            version = "0.1.6"
+            version = "0.1.7"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"
