@@ -33,9 +33,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun onCompleteEmvTransaction(data: Map<String, Any>) {
+    fun onCompleteEmvTransaction(data: Map<String, Any>): Boolean {
         // call your endpoint here
         Log.i("FINAL RESULT", data.toString())
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

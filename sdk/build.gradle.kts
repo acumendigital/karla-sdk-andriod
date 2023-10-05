@@ -46,8 +46,6 @@ dependencies {
     implementation("com.squareup:otto:1.3.8")
     implementation("com.github.pro100svitlo:creditCardNfcReader:1.0.3")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.4")
-
-//    implementation("com.romellfudi.fudinfc:fudi-nfc:android-12-1.1.0")
 }
 
 configure<PublishingExtension> {
@@ -65,7 +63,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla-sdk-andriod"
             groupId = "com.github.acumendigital"
-            version = "0.1.8"
+            version = "0.1.9"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"
