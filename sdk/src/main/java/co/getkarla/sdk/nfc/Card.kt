@@ -75,11 +75,7 @@ class Card: Activity(), MyCardNfcAsyncTask.MyCardNfcInterface {
         val holderName =
             mCardNfcAsyncTask?.cardHolderFirstName + " " + mCardNfcAsyncTask?.cardHolderLastName
         val cardType = parseCardType(mCardNfcAsyncTask?.cardType)
-//        Log.d("CARD", mCardNfcAsyncTask?.cardNumber.toString())
-//        Log.d("CARD", expirationDate.toString())
-//        Log.d("CARD", holderName)
-//        Log.d("CARD", cardType.toString())
-        val resultMap = mapOf("pan" to cardNumber, "exp" to expirationDate, "type" to cardType, "holder_name" to holderName)
+        val resultMap = mapOf("error" to false, "data" to mapOf("pan" to cardNumber, "exp" to expirationDate, "type" to cardType, "holder_name" to holderName))
         val result = Events.EmvReadResult(JSONObject(resultMap).toString())
         EventBus.post(result)
         finish()
@@ -90,12 +86,24 @@ class Card: Activity(), MyCardNfcAsyncTask.MyCardNfcInterface {
     }
 
     override fun cardWithLockedNfc() {
+        val resultMap = mapOf("error" to true, "msg" to "your card has locked NFC")
+        val result = Events.EmvReadResult(JSONObject(resultMap).toString())
+        EventBus.post(result)
+        finish()
     }
 
     override fun doNotMoveCardSoFast() {
+        val resultMap = mapOf("error" to true, "msg" to "do not move card so fast")
+        val result = Events.EmvReadResult(JSONObject(resultMap).toString())
+        EventBus.post(result)
+        finish()
     }
 
     override fun unknownEmvCard() {
+        val resultMap = mapOf("error" to true, "msg" to "unknown emv card")
+        val result = Events.EmvReadResult(JSONObject(resultMap).toString())
+        EventBus.post(result)
+        finish()
     }
 
     private fun readNFCInfo() {

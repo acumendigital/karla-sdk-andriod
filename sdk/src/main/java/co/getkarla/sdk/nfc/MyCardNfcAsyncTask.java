@@ -188,6 +188,13 @@ public class MyCardNfcAsyncTask extends AsyncTask<Void, Void, Object> {
         } else {
             mInterface.doNotMoveCardSoFast();
         }
+
+        if (mCard != null) {
+            if (mCard.getCardNumber() == null) {
+                mInterface.cardWithLockedNfc();
+            }
+        }
+
         mInterface.finishNfcReadCard();
         clearAll();
     }

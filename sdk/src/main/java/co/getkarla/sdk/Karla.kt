@@ -31,7 +31,6 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     private val apiKey: String
     private lateinit var cardResult: MutableMap<String, Any>
     private var completeEmvTransaction: (data: Map<String, Any>) -> Unit
-    private lateinit var authorizeTransaction: () -> Boolean
     private var amount: Double = 0.0
 
     //    fun init(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit ) {
@@ -72,10 +71,13 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     @Subscribe
     fun onComplete(event: Events.EmvReadResult) {
         val result = JSONObject(event.getResult())
-        cardResult = result.toMap() as MutableMap<String, Any>
-        this.onReadEmvCard(result.toMap())
-        this.authorizeTransaction()
+        val resultMap = result.toMap() as MutableMap<String, Any>
 
+        if (resultMap["error"] == false)  {
+            cardResult = resultMap["data"] as MutableMap<String, Any>
+        }
+
+        this.onReadEmvCard(mapOf("error" to resultMap["error"], "msg" to resultMap["msg"]))
     }
 
     fun completeTransaction() {
@@ -86,11 +88,10 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
         }
     }
 
-    fun readEmvCard(context: Activity, amount: Double, authorizeTransaction: () -> Boolean) {
+    fun readEmvCard(context: Activity, amount: Double) {
         try {
             val intent = Intent(context, Card::class.java)
             context.startService(intent)
-            this.authorizeTransaction = authorizeTransaction
             this.amount = amount
             // log that user started a transaction
         } catch (e: Exception) {

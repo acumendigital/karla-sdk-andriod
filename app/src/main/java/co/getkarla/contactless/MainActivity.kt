@@ -25,6 +25,12 @@ class MainActivity : ComponentActivity() {
 
     fun onReadEmvCard(data: Map<String, *>) {
         // will probably tell you if there's an error from here
+        if (data["error"] == false) {
+            karla.completeEmvTransaction("1919")
+        } else {
+            // handle error
+            Log.d("EMV ERROR", data["msg"] as String)
+        }
     }
 
     fun onCompleteEmvTransaction(data: Map<String, Any>) {
@@ -32,16 +38,12 @@ class MainActivity : ComponentActivity() {
         Log.i("FINAL RESULT", data.toString())
     }
 
-    fun authorizeTransaction(): Boolean {
-        karla.completeEmvTransaction("1919")
-        return false
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 //        sdk.completeTransaction()
 //        sdk.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
-        karla.readEmvCard(this, 40000.00, ::authorizeTransaction)
+        karla.readEmvCard(this, 45000.00)
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme
