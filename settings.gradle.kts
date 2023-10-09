@@ -4,10 +4,14 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         jcenter()
-//        maven {
-//            url = uri("https://jitpack.io")
-//        }
     }
+//    resolutionStrategy {
+//        eachPlugin {
+//            if (requested.id.id == "kotlinx-serialization") {
+//                useModule("org.jetbrains.kotlinx:kotlinx-serialization:1.5.1")
+//            }
+//        }
+//    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -17,7 +21,6 @@ dependencyResolutionManagement {
         mavenCentral()
         maven {
             url = uri("https://jitpack.io")
-            credentials { username = "jp_mu5a5evnsugudvpvn4k91so78g" }
         }
     }
 }

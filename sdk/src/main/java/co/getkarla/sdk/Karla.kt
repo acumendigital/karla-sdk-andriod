@@ -2,11 +2,24 @@ package co.getkarla.sdk
 
 import android.app.Activity
 import android.content.Intent
+import android.provider.Settings.Global
 import android.util.Log
 import co.getkarla.sdk.cardEmulation.KHostApduService
 import co.getkarla.sdk.nfc.Card
 import co.getkarla.sdk.nfc.Nfc
+import com.google.gson.Gson
 import com.squareup.otto.Subscribe
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -33,6 +46,20 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     private lateinit var cardResult: MutableMap<String, Any>
     private var completeEmvTransaction: (data: Map<String, Any>) -> Boolean
     private var amount: Double = 0.0
+
+    data class Transaction(
+        val _id: String,
+        val amount: Double,
+        val success: Boolean,
+        val reason: String?
+    )
+
+    data class Response(
+        val error: Boolean,
+        val data: Transaction,
+        val msg: String?
+    )
+
     init {
         this.onTransactionInitiated = onTransactionInitiated
         this.onTransactionCompleted = onTransactionCompleted
@@ -83,11 +110,8 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
 
     fun readEmvCard(context: Activity, amount: Double) {
         try {
-//            val intent = Intent(context, Card::class.java)
-//            context.startService(intent)
             this.mCard = Card()
             this.amount = amount
-            // log that user started a transaction
         } catch (e: Exception) {
             throw(e)
         }
@@ -96,7 +120,89 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     fun completeEmvTransaction(pin: String) {
         cardResult["pin"] = pin
         cardResult["amount"] = this.amount
+
+        val context = this
+        runBlocking {
+            val scope = CoroutineScope(Dispatchers.IO)
+            val result = scope.async{
+                context.recordTransaction(context.amount)
+            }
+
+            val txn = result.await()
+            if (txn != null) {
+                cardResult["transaction_id"] = txn._id
+            }
+        }
+
         this.completeEmvTransaction(cardResult)
+    }
+
+    private fun recordTransaction(amount: Double): Transaction? {
+
+        val url = "https://karla-dev.fly.dev/api/v1/partner/transaction"
+        val requestData = JSONObject(mapOf("amount" to amount)).toString().trimIndent()
+        val apiKey = this.apiKey
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val requestBody = requestData.toRequestBody(mediaType)
+
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .addHeader("Authorization", "Bearer $apiKey")
+            .build()
+
+        try {
+            val response = client.newCall(request).execute()
+            if (response.isSuccessful) {
+                val responseBody = response.body?.string()
+                val gson = Gson()
+                val resp = gson.fromJson(responseBody, Response::class.java)
+                if (!resp.error) {
+                    return resp.data
+                }
+            } else {
+                println("Request failed with code: ${response.code}")
+            }
+        } catch (e: Exception) {
+            println("ERROR: ${e.message}")
+        }
+
+        return null
+    }
+
+    fun updateTransactionStatus(id: String, status: Boolean, reason: String?): Boolean {
+        val url = "https://karla-dev.fly.dev/api/v1/partner/transaction/$id"
+        val requestData = JSONObject(mapOf("success" to status, "reason" to reason )).toString()
+        val apiKey = this.apiKey
+
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val requestBody = requestData.toRequestBody(mediaType)
+
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url(url)
+            .put(requestBody)
+            .addHeader("Authorization", "Bearer $apiKey")
+            .build()
+
+        try {
+            val response = client.newCall(request).execute()
+            if (response.isSuccessful) {
+                val responseBody = response.body?.string()
+                val gson = Gson()
+                val resp = gson.fromJson(responseBody, Response::class.java)
+                return !resp.error
+            } else {
+                println("Request failed with code: ${response.code}")
+            }
+        } catch (e: Exception) {
+            println("ERROR: ${e.message}")
+        }
+
+        return false
     }
 
     fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith { it ->

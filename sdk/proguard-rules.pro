@@ -26,6 +26,10 @@
     @com.squareup.otto.Produce public *;
 }
 
+#-keepclassmembers class ** {
+#    @kotlinx.serialization.Serializable public *;
+#}
+
 #-keep class co.getkarla.sdk.Karla
 #-keep class co.getkarla.sdk.Events
 #-keep class co.getkarla.sdk.Bus

@@ -46,6 +46,9 @@ dependencies {
     implementation("com.squareup:otto:1.3.8")
     implementation("com.github.pro100svitlo:creditCardNfcReader:1.0.3")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.4")
+
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.google.code.gson:gson:2.8.8")
 }
 
 configure<PublishingExtension> {
@@ -55,7 +58,6 @@ configure<PublishingExtension> {
 //        }
         maven {
             url = uri("https://jitpack.io")
-            credentials { username = "jp_mu5a5evnsugudvpvn4k91so78g" }
         }
     }
 
@@ -63,7 +65,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla-sdk-andriod"
             groupId = "com.github.acumendigital"
-            version = "0.2.0"
+            version = "0.2.1"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"

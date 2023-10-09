@@ -13,10 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import co.getkarla.contactless.ui.theme.KarlaTheme
 import co.getkarla.sdk.Karla
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
 
-    private val karla = Karla("", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard, ::onCompleteEmvTransaction)
+    private val karla = Karla("KARLA_ONRtoCktLtBwFgQPIxltuuqwHA", ::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard, ::onCompleteEmvTransaction)
     fun onTransactionCompleted(data: Map<String, *>) {
         Log.i("FINAL RESULT", data.toString())
         // do whatever you want to do with the data received
@@ -36,6 +40,14 @@ class MainActivity : ComponentActivity() {
     fun onCompleteEmvTransaction(data: Map<String, Any>): Boolean {
         // call your endpoint here
         Log.i("FINAL RESULT", data.toString())
+        runBlocking {
+            val scope = CoroutineScope(Dispatchers.IO)
+            val result = scope.async{
+                karla.updateTransactionStatus(data["transaction_id"].toString(), true, "success")
+            }
+            val txn = result.await()
+            Log.d("STATUS RESULT", txn.toString())
+        }
         return true
     }
 
