@@ -2,7 +2,6 @@ package co.getkarla.sdk
 
 import android.app.Activity
 import android.content.Intent
-import android.provider.Settings.Global
 import android.util.Log
 import co.getkarla.sdk.cardEmulation.KHostApduService
 import co.getkarla.sdk.nfc.Card
@@ -10,11 +9,8 @@ import co.getkarla.sdk.nfc.Nfc
 import com.google.gson.Gson
 import com.squareup.otto.Subscribe
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
