@@ -38,7 +38,7 @@ class Karla(onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactio
     val onTransactionInitiated: (data: Map<String, *>) -> Unit
     val onTransactionCompleted: (data: Map<String, *>) -> Unit
     val onReadEmvCard: (data: Map<String, *>) -> Unit
-    private val apiKey: String = "KARLA_ONRtoCktLtBwFgQPIxltuuqwHA"
+    private val apiKey: String = "KARLA_UcPVCOMuOmeoEqHBGHuSHjKapw"
     private lateinit var cardResult: MutableMap<String, Any>
     private var completeEmvTransaction: (data: Map<String, Any>) -> Boolean
     private var amount: Double = 0.0
