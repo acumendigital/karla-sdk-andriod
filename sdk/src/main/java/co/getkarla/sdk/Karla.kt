@@ -19,7 +19,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Karla(onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit, onCompleteEmvTransaction: (data: Map<String, Any>) -> Boolean ) {
+class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit, onCompleteEmvTransaction: (data: Map<String, Any>) -> Boolean ) {
     private lateinit var mCard: Card
     private lateinit var mNfc: Nfc
 
@@ -38,7 +38,7 @@ class Karla(onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactio
     val onTransactionInitiated: (data: Map<String, *>) -> Unit
     val onTransactionCompleted: (data: Map<String, *>) -> Unit
     val onReadEmvCard: (data: Map<String, *>) -> Unit
-    private val apiKey: String = "KARLA_ONRtoCktLtBwFgQPIxltuuqwHA"
+    private val apiKey: String
     private lateinit var cardResult: MutableMap<String, Any>
     private var completeEmvTransaction: (data: Map<String, Any>) -> Boolean
     private var amount: Double = 0.0
@@ -60,6 +60,7 @@ class Karla(onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactio
         this.onTransactionInitiated = onTransactionInitiated
         this.onTransactionCompleted = onTransactionCompleted
         this.onReadEmvCard = onReadEmvCard
+        this.apiKey = apiKey
         this.completeEmvTransaction = onCompleteEmvTransaction
         EventBus.register(this)
     }
