@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import co.getkarla.sdk.EventBus
 import co.getkarla.sdk.Events
-import com.pro100svitlo.creditCardNfcReader.utils.CardNfcUtils
+import co.getkarla.sdk.creditCardNfcReader.utils.CardNfcUtils
 import org.json.JSONObject
 
 class Card: Activity(), MyCardNfcAsyncTask.MyCardNfcInterface {

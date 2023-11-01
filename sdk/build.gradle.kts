@@ -44,7 +44,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation("com.squareup:otto:1.3.8")
-    implementation("com.github.pro100svitlo:creditCardNfcReader:1.0.3")
+//    implementation("com.github.pro100svitlo:creditCardNfcReader:1.0.3")
+    implementation("com.github.elvis-chuks.credit-Card-Nfc-Reader:library:parent-2.1.1")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.4")
 
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
@@ -65,7 +66,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla-sdk-andriod"
             groupId = "com.github.acumendigital"
-            version = "0.2.1"
+            version = "0.2.2"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"
