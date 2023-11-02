@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import co.getkarla.sdk.EventBus
@@ -34,8 +35,24 @@ class Nfc : Activity() {
         super.onCreate(savedInstanceState)
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
         if (checkNFCEnable()) {
-            mPendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+//            mPendingIntent =
+//                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            mPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PendingIntent.getActivity(
+                    this,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_MUTABLE
+                )
+            } else {
+                PendingIntent.getActivity(
+                    this,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_ONE_SHOT
+                )
+            }
 
             if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
