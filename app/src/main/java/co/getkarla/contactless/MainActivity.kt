@@ -20,7 +20,7 @@ import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
 
-    private val karla = Karla(::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard, ::onCompleteEmvTransaction)
+    private val karla = Karla("",::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard, ::onCompleteEmvTransaction)
     fun onTransactionCompleted(data: Map<String, *>) {
         Log.i("FINAL RESULT", data.toString())
         // do whatever you want to do with the data received
