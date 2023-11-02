@@ -37,7 +37,7 @@ public class CardNfcUtils {
         else
         {
             mPendingIntent = PendingIntent.getActivity
-                    (mActivity, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    (mActivity, 0, intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         }
     }
 
