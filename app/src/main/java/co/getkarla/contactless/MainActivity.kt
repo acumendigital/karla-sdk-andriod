@@ -54,9 +54,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        karla.completeTransaction()
-//        sdk.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
-        karla.readEmvCard(this, 45000.00)
+        karla.completeTransaction(this)
+//        karla.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
+//        karla.readEmvCard(this, 45000.00)
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme

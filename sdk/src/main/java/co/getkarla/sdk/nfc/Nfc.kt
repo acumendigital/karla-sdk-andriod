@@ -5,14 +5,17 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
+import android.nfc.Tag
+import android.nfc.tech.Ndef
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import co.getkarla.sdk.EventBus
 import co.getkarla.sdk.Events
 import co.getkarla.sdk.nfc.parser.NdefMessageParser
 
-class Nfc : Activity() {
+class Nfc : Activity(), NfcAdapter.ReaderCallback {
 
     private var TAG = "NFC ACTIVITY"
 
@@ -33,6 +36,8 @@ class Nfc : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        EventBus.register(this)
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
         if (checkNFCEnable()) {
 //            mPendingIntent =
@@ -61,6 +66,7 @@ class Nfc : Activity() {
                     parserNDEFMessage(messages)
                 }
             }
+
         } else {
             // TODO: implement no nfc
             Log.d(TAG, "nfc not enabled")
@@ -69,12 +75,21 @@ class Nfc : Activity() {
 
     override fun onResume() {
         super.onResume()
-        mNfcAdapter?.enableForegroundDispatch(this, mPendingIntent, null, null)
+        if (mNfcAdapter != null) {
+            val options = Bundle();
+            options.putInt(NfcAdapter.EXTRA_READER_PRESENCE_CHECK_DELAY, 250);
+            mNfcAdapter?.enableReaderMode(this, this,NfcAdapter.FLAG_READER_NFC_A or
+                NfcAdapter.FLAG_READER_NFC_B or
+                NfcAdapter.FLAG_READER_NFC_F or
+                NfcAdapter.FLAG_READER_NFC_V or
+                NfcAdapter.FLAG_READER_NFC_BARCODE or
+                NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,options)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        mNfcAdapter?.disableForegroundDispatch(this)
+        mNfcAdapter?.disableReaderMode(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -113,6 +128,35 @@ class Nfc : Activity() {
             false
         } else {
             mNfcAdapter?.isEnabled == true
+        }
+    }
+
+    override fun onTagDiscovered(tag: Tag?) {
+        val mNdef = Ndef.get(tag)
+
+        var finalResult = ""
+
+        if (mNdef != null) {
+            val mNdefMessage = mNdef.cachedNdefMessage
+
+            if (mNdefMessage != null) {
+                for (record in mNdefMessage.records) {
+                    val payload = record.payload
+                    val data = String(payload, Charsets.UTF_8)
+                    val startIndex = data.indexOf("{", data.indexOf("stxen"))
+                    val result = data.substring(startIndex)
+                    finalResult = result
+
+                }
+
+                runOnUiThread {
+                    val result = Events.NfcReadResult(finalResult)
+                    EventBus.post(result)
+                }
+
+                finish()
+            }
+
         }
     }
 }

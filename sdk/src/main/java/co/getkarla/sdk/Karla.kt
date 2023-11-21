@@ -96,9 +96,10 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
         this.onReadEmvCard(mapOf("error" to resultMap["error"], "msg" to resultMap["msg"]))
     }
 
-    fun completeTransaction() {
+    fun completeTransaction(context: Activity) {
         try {
-            this.mNfc = Nfc()
+            val intent = Intent(context, Nfc::class.java)
+            context.startActivity(intent)
         } catch (e: Exception) {
             throw(e)
         }
