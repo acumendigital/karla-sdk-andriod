@@ -107,7 +107,8 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
 
     fun readEmvCard(context: Activity, amount: Double) {
         try {
-            this.mCard = Card()
+            val intent = Intent(context, Card::class.java)
+            context.startActivity(intent)
             this.amount = amount
         } catch (e: Exception) {
             throw(e)

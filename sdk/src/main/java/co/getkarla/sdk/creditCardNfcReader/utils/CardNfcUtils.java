@@ -2,13 +2,11 @@ package co.getkarla.sdk.creditCardNfcReader.utils;
 
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.NfcA;
-import android.os.Build;
 
 /**
  * Created by pro100svitlo on 31.03.16.

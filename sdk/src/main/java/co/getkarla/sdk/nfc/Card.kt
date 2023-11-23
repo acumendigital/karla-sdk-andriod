@@ -60,8 +60,8 @@ class Card: Activity(), MyCardNfcAsyncTask.MyCardNfcInterface {
         if (mNfcAdapter != null) {
             mCardNfcUtils?.disableDispatch()
         }
-
-        mNfcAdapter?.disableForegroundDispatch(this)
+//        mNfcAdapter?.disableReaderMode(this)
+//        mNfcAdapter?.disableForegroundDispatch(this)
     }
 
     override fun onNewIntent(intent: Intent) {
