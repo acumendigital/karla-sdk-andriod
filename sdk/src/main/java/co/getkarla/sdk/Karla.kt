@@ -19,7 +19,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: Map<String, *>) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit, onCompleteEmvTransaction: (data: Map<String, Any>) -> Boolean ) {
+class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Unit, onTransactionCompleted: (data: String) -> Unit, onReadEmvCard: (data: Map<String, *>) -> Unit, onCompleteEmvTransaction: (data: Map<String, Any>) -> Boolean ) {
     private lateinit var mCard: Card
     private lateinit var mNfc: Nfc
 
@@ -36,7 +36,7 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     * */
 
     val onTransactionInitiated: (data: Map<String, *>) -> Unit
-    val onTransactionCompleted: (data: Map<String, *>) -> Unit
+    val onTransactionCompleted: (data: String) -> Unit
     val onReadEmvCard: (data: Map<String, *>) -> Unit
     private val apiKey: String
     private lateinit var cardResult: MutableMap<String, Any>
@@ -80,8 +80,8 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
 
     @Subscribe
     fun onComplete(event: Events.NfcReadResult) {
-        val result = JSONObject(event.getResult())
-        this.onTransactionCompleted(result.toMap())
+//        val result = JSONObject(event.getResult())
+        this.onTransactionCompleted(event.getResult())
     }
 
     @Subscribe

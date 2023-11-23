@@ -21,8 +21,8 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : ComponentActivity() {
 
     private val karla = Karla("KARLA_UcPVCOMuOmeoEqHBGHuSHjKapw",::onTransactionInitiated, ::onTransactionCompleted, ::onReadEmvCard, ::onCompleteEmvTransaction)
-    fun onTransactionCompleted(data: Map<String, *>) {
-        Log.i("FINAL RESULT", data.toString())
+    fun onTransactionCompleted(data: String) {
+        Log.i("FINAL RESULT", data)
         // do whatever you want to do with the data received
     }
     fun onTransactionInitiated(data: Map<String, *>) {}
@@ -54,9 +54,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        karla.completeTransaction(this)
+        karla.completeTransaction(this)
 //        karla.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
-        karla.readEmvCard(this, 45000.00)
+//        karla.readEmvCard(this, 45000.00)
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme

@@ -18,6 +18,12 @@ import android.util.Log
 import co.getkarla.sdk.EventBus
 import co.getkarla.sdk.Events
 import co.getkarla.sdk.nfc.parser.NdefMessageParser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
 class Nfc : Activity(), NfcAdapter.ReaderCallback {
 
@@ -93,6 +99,7 @@ class Nfc : Activity(), NfcAdapter.ReaderCallback {
 
     override fun onPause() {
         super.onPause()
+        mNfcAdapter?.disableForegroundDispatch(this)
         mNfcAdapter?.disableReaderMode(this)
     }
 
@@ -158,7 +165,13 @@ class Nfc : Activity(), NfcAdapter.ReaderCallback {
                     EventBus.post(result)
                 }
 
-                finish()
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(TimeUnit.SECONDS.toMillis(3))
+                    withContext(Dispatchers.Main) {
+                        Log.i("TAG", "this will be called after 3 seconds")
+                        finish()
+                    }
+                }
             }
 
         }
