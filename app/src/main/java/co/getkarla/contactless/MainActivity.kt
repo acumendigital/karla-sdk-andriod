@@ -54,8 +54,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        karla.completeTransaction(this)
-//        karla.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
+//        karla.completeTransaction(this)
+        karla.startTransaction(this, "", 4000.00,"", mapOf("merchantName" to "Elvis Chuks"))
 //        karla.readEmvCard(this, 45000.00)
         setContent {
             KarlaTheme {

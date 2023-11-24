@@ -80,8 +80,8 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
 
     @Subscribe
     fun onComplete(event: Events.NfcReadResult) {
-//        val result = JSONObject(event.getResult())
-        this.onTransactionCompleted(event.getResult())
+        val result = JSONObject(event.getResult())
+        this.onTransactionCompleted(result.toString())
     }
 
     @Subscribe
