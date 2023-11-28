@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
 //        karla.completeTransaction(this)
 
-//        karla.readEmvCard(this, 45000.00)
+        karla.readEmvCard(this, 45000.00)
         setContent {
             KarlaTheme {
                 // A surface container using the 'background' color from the theme
@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        karla.startTransaction(this, "656558e524ad4dfc363d4b9b", 4000.00,"", mapOf("merchantName" to "Elvis Merchant", "_id" to "656558e524ad4dfc363d4b9b"))
+//        karla.startTransaction(this, "656558e524ad4dfc363d4b9b", 4000.00,"", mapOf("merchantName" to "Elvis Merchant", "_id" to "656558e524ad4dfc363d4b9b"))
     }
 }
 

@@ -9,7 +9,7 @@
         <activity
             android:name=".nfc.Nfc"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@android:style/Theme.Dialog"
             android:exported="true">
 <!--            <intent-filter android:priority="1000">-->
 <!--                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>-->
@@ -20,7 +20,7 @@
         <activity
             android:name=".nfc.Card"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@android:style/Theme.Dialog"
             android:exported="true">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.nfc.action.TECH_DISCOVERED" />-->
