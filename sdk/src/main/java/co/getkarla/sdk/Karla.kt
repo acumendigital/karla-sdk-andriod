@@ -1,6 +1,7 @@
 package co.getkarla.sdk
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import co.getkarla.sdk.cardEmulation.KHostApduService
@@ -65,7 +66,7 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
         EventBus.register(this)
     }
 
-    fun startTransaction(context: Activity, id: String, amount: Double, reference: String, extra: Map<String, *>?) {
+    fun startTransaction(context: Context, id: String, amount: Double, reference: String, extra: Map<String, *>?) {
         val intent = Intent(context, KHostApduService::class.java)
         val data = mapOf("id" to id, "amount" to amount, "reference" to reference).plus(extra as Map<String, *>)
         if (extra.isNotEmpty()) {

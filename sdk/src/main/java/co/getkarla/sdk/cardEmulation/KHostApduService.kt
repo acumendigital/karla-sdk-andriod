@@ -2,6 +2,7 @@ package co.getkarla.sdk.cardEmulation
 
 import android.nfc.cardemulation.HostApduService
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
@@ -98,7 +99,7 @@ open class KHostApduService : HostApduService() {
 
     private val NDEF_ID = byteArrayOf(0xE1.toByte(), 0x04.toByte())
 
-    private var NDEF_URI = NdefMessage(createTextRecord("en", "Ciao, come va?", NDEF_ID))
+    private var NDEF_URI = NdefMessage(createTextRecord("en", "no nfc data", NDEF_ID))
     private var NDEF_URI_BYTES = NDEF_URI.toByteArray()
     private var NDEF_URI_LEN = fillByteArrayToFixedDimension(
         BigInteger.valueOf(NDEF_URI_BYTES.size.toLong()).toByteArray(), 2
@@ -106,6 +107,8 @@ open class KHostApduService : HostApduService() {
 
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+
+        Log.d("HCE ACTIVITY", "starting magic")
 
         if (intent.hasExtra("ndefMessage")) {
             Log.d("HCE ACTIVITY", "ndef dey")
