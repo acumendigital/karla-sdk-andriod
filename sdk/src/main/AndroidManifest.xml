@@ -10,6 +10,7 @@
             android:name=".nfc.Nfc"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Dialog"
+            android:label="NFC READ"
             android:exported="true">
 <!--            <intent-filter android:priority="1000">-->
 <!--                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>-->
@@ -21,6 +22,7 @@
             android:name=".nfc.Card"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Dialog"
+            android:label="NFC CARD"
             android:exported="true">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.nfc.action.TECH_DISCOVERED" />-->
