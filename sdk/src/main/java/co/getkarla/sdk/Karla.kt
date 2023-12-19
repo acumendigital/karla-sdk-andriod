@@ -100,6 +100,7 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     fun completeTransaction(context: Context) {
         try {
             val intent = Intent(context, Nfc::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         } catch (e: Exception) {
             throw(e)
@@ -109,6 +110,7 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
     fun readEmvCard(context: Context, amount: Double) {
         try {
             val intent = Intent(context, Card::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
             this.amount = amount
         } catch (e: Exception) {
