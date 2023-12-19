@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.acumendigital</groupId>
     <artifactId>karla-sdk-andriod</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.3</version>
     <packaging>pom</packaging>
     <description>tap to pay sdk</description>
 </project>
