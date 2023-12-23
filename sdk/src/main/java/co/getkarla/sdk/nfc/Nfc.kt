@@ -50,7 +50,7 @@ class Nfc : Activity(), NfcAdapter.ReaderCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        EventBus.register(this)
+//        EventBus.register(this)
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
         if (checkNFCEnable()) {
 //            mPendingIntent =
@@ -156,19 +156,6 @@ class Nfc : Activity(), NfcAdapter.ReaderCallback {
         commandApdu[commandApdu.size - 1] = 0x00.toByte() // Le
         return commandApdu
     }
-
-//    fun hexStringToByteArray(s: String): ByteArray {
-//        val len = s.length
-//        val data = ByteArray(len / 2)
-//        var i = 0
-//        while (i < len) {
-//            data[i / 2] = ((((s[i].digitToIntOrNull(16) ?: (-1 shl 4)) + s[i + 1].digitToIntOrNull(
-//                16
-//            )!!) ?: -1)).toByte()
-//            i += 2
-//        }
-//        return data
-//    }
 
     fun hexStringToByteArray(s: String): ByteArray {
         val len = s.length
