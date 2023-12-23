@@ -118,21 +118,21 @@ class Nfc : Activity(), NfcAdapter.ReaderCallback {
     }
 
     private fun parserNDEFMessage(messages: List<NdefMessage>) {
-        val builder = StringBuilder()
-        val records = NdefMessageParser.parse(messages[0])
-        val size = records.size
-
-        for (i in 0 until size) {
-            val record = records[i]
-            val str = record.str()
-            print(str)
-            builder.append(str).append("\n")
-        }
-
-        this.result = builder.toString()
-        val result = Events.NfcReadResult(builder.toString())
-        EventBus.post(result)
-        finish()
+//        val builder = StringBuilder()
+//        val records = NdefMessageParser.parse(messages[0])
+//        val size = records.size
+//
+//        for (i in 0 until size) {
+//            val record = records[i]
+//            val str = record.str()
+//            print(str)
+//            builder.append(str).append("\n")
+//        }
+//
+//        this.result = builder.toString()
+//        val result = Events.NfcReadResult(builder.toString())
+//        EventBus.post(result)
+//        finish()
     }
 
     private fun checkNFCEnable(): Boolean {
