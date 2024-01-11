@@ -119,6 +119,14 @@ open class KHostApduService : HostApduService() {
             NDEF_URI_LEN = fillByteArrayToFixedDimension(
                 BigInteger.valueOf(NDEF_URI_BYTES.size.toLong()).toByteArray(), 2
             )
+        } else if (intent.hasExtra("ndefURI")) {
+            Log.d("HCE ACTIVITY", "ndef uri dey")
+            NDEF_URI =
+                NdefMessage(NdefRecord.createUri(intent.getStringExtra("ndefURI").toString()))
+            NDEF_URI_BYTES = NDEF_URI.toByteArray()
+            NDEF_URI_LEN = fillByteArrayToFixedDimension(
+                BigInteger.valueOf(NDEF_URI_BYTES.size.toLong()).toByteArray(), 2
+            )
         }
 
         Log.i(TAG, "onStartCommand() | NDEF" + NDEF_URI.toString())

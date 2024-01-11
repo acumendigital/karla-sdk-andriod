@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        karla.completeTransaction(this)
+//        karla.completeTransaction(this)
 
 //        karla.readEmvCard(this, 45000.00)
         setContent {
@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 //        karla.startTransaction(this, "656558e524ad4dfc363d4b9b", 4000.00,"", mapOf("merchantName" to "Elvis Merchant", "_id" to "656558e524ad4dfc363d4b9b"))
+        karla.startApplePayTransaction(this, "656558e524ad4dfc363d4b9b", "elvis@acumen.digital", "")
     }
 }
 

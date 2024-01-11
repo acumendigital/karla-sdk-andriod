@@ -79,6 +79,13 @@ class Karla(apiKey: String, onTransactionInitiated: (data: Map<String, *>) -> Un
         this.onTransactionInitiated(data)
     }
 
+    fun startApplePayTransaction(context: Context, id: String,email: String, auth: String) {
+        val intent = Intent(context, KHostApduService::class.java)
+        val data = "https://apple-pay.getkarla.co?txn_id=$id&auth=$auth&email=$email"
+        intent.putExtra("ndefURI", data)
+        context.startService(intent)
+    }
+
     @Subscribe
     fun onComplete(event: Events.NfcReadResult) {
         val result = JSONObject(event.getResult())
