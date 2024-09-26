@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "co.getkarla.sdk"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
-        minSdk = 22
+        minSdk = 21
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -66,7 +66,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla-sdk-andriod"
             groupId = "com.github.acumendigital"
-            version = "0.4.2"
+            version = "0.4.3"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"
