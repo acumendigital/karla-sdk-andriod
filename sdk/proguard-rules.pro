@@ -26,6 +26,9 @@
     @com.squareup.otto.Produce public *;
 }
 
+-keep class co.getkarla.sdk.creditCardNfcReader.CardNfcAsyncTask { *; }
+
+
 #-keepclassmembers class ** {
 #    @kotlinx.serialization.Serializable public *;
 #}

@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "co.getkarla.sdk"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "co.getkarla.sdk"
-        minSdk = 22
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -67,5 +67,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation(project(":sdk"))
+//    implementation(project(":sdk"))
+    implementation("com.squareup:otto:1.3.8")
+    implementation("com.github.acumendigital:karla-sdk-andriod:0.3.9")
+    implementation("com.github.elvis-chuks.credit-Card-Nfc-Reader:library:parent-2.1.1")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.4")
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.google.code.gson:gson:2.8.8")
 }
