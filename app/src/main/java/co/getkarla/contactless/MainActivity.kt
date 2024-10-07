@@ -70,7 +70,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 //        karla.startTransaction(this, "656558e524ad4dfc363d4b9b", 4000.00,"", mapOf("merchantName" to "Elvis Merchant", "_id" to "656558e524ad4dfc363d4b9b"))
-        karla.startApplePayTransaction(this, "656558e524ad4dfc363d4b9b", "elvis@acumen.digital", "")
+//        karla.startApplePayTransaction(this, "656558e524ad4dfc363d4b9b", "elvis@acumen.digital", "")
+        karla.completeTransaction(this)
     }
 }
 
