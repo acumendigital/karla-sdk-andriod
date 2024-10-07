@@ -18,7 +18,7 @@ android {
 
     buildTypes {
         release {
-//            isMinifyEnabled = true
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -66,7 +66,7 @@ configure<PublishingExtension> {
         create<MavenPublication>("Maven") {
             artifactId = "karla-sdk-andriod"
             groupId = "com.github.acumendigital"
-            version = "0.4.3"
+            version = "0.3.8-fixture"
             afterEvaluate {
                 artifact(tasks.getByName(
                     "bundleReleaseAar"
